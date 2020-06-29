@@ -38,8 +38,10 @@ docker build . -t helloworld
 ```
 ## Run docker
 ```
-docker run -it -p8080:8080 helloworld
+docker run --name helloworld -d -p8080:8080 helloworld # docker port 8080 is binded to host port 8080
 ```
+Or alternatively use `scripts/redeploy.sh`. It will rebuild image as `helloworld:latest`, try to stop previous instance (in case you have one running already) and start docker with name `helloworld` while binding `8080` port of docker to `8080` on host.
+
 After that you can generate request using curl or other tool of your desire.
 ### Curl example:
 ```
@@ -48,9 +50,15 @@ After that you can generate request using curl or other tool of your desire.
 ```
 
 # Travis CI
+
+## Setup
 In order to utilize travis CI on your fork, connect TravisCI to your repository.
 Set following env variables for that repo:
 `DOCKER_USER` - your user name on github
 `DOCKER_PASSWORD` - API token for github
 `DOCKER_REGISTRY` - registry to push to, e.g. for `Packages` on github mine is set to `docker.pkg.github.com`
-The image will be pushed in format `DOCKER_REGISTRY`/`GITHUB_USERNAME`/`GITHUB_REPO`/helloworld:`GIT_TAG`
+
+## Triggers
+Each commit will trigger build tests
+Each tag will result in new image pushed as 
+```$DOCKER_REGISTRY/$GITHUB_USERNAME/$GITHUB_REPO/helloworld:$GIT_TAG```
