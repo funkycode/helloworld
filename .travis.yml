@@ -1,6 +1,4 @@
 language: go
-services:
-  - docker
 jobs:
   include:
     - stage: golangci-lint
@@ -14,6 +12,8 @@ jobs:
       script:
         - go build ./...
     - stage: package
+      services:
+        - docker
       before_deploy:
         - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USER" --password-stdin && docker build . -t helloworld:"$TRAVIS_COMMIT"
       deploy:
