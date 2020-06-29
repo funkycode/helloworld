@@ -14,7 +14,7 @@ before_deploy:
 deploy:
   provider: script
   script:
-    - docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_COMMIT" && docker push "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_COMMIT"
+    - docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_TAG" && docker push "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_TAG"
   on:
     tags: true
   # on:
