@@ -1,4 +1,4 @@
 language: go
-script: go test ./.. && go build ./..
+script: go test github.com/funkycode/helloworld/.../.. && go build github.com/funkycode/helloworld/.../..
 notifications:
   email: false
