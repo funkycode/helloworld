@@ -1,23 +1,30 @@
 language: go
 services:
   - docker
-env:
-  - CGO_ENABLE=0
-install:
-  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
-script:
-  - golangci-lint run ./...
-  - go test ./...
-  - go build ./...
-before_deploy:
-  - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USER" --password-stdin
-deploy:
-  provider: script
-  script:
-    - docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_TAG" && docker push "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_TAG"
-  on:
-    tags: true
-  # on:
-  #   branch: master
+jobs:
+  include:
+    - stage: golangci-lint
+      script:
+        - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
+        - golangci-lint run ./...
+    - stage: go tests
+      script:
+        - go test ./...
+    - stage: go build test
+      script:
+        - go build ./...
+    - stage: package
+      before_deploy:
+        - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USER" --password-stdin && docker build . -t helloworld:"$TRAVIS_COMMIT"
+      deploy:
+        provider: script
+        script: docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_TAG" && docker push "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_TAG"
+        on:
+          tags: true
+stages:
+  - golangci-lint
+  - go tests
+  - go build test
+  - package
 notifications:
   email: false
