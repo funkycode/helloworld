@@ -1,9 +1,17 @@
 language: go
+services:
+  - docker
 install:
   - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.27.0
 script:
   - golangci-lint run ./...
   - go test ./...
   - go build ./...
+before_deploy:
+  - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USER" --password-stdin
+deploy:
+  - docker build . -t helloworld:$TRAVIS_COMMIT
+  - docker tag helloworld:$TRAVIS_COMMIT  $DOCKER_REGISTRY/helloworld:$TRAVIS_COMMIT
+  - docker push $DOCKER_REGISTRY/helloworld:$TRAVIS_COMMIT
 notifications:
   email: false
