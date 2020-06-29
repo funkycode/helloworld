@@ -35,6 +35,8 @@ Set following env variables for that repo:
 `DOCKER_PASSWORD` - API token for github
 `DOCKER_REGISTRY` - registry to push to, e.g. for `Packages` on github mine is set to `docker.pkg.github.com`
 
+`DO NOT forget to update badge in the head of this README to link to your build status`
+
 ### Triggers
 
 Each commit will trigger build tests
