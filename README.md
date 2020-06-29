@@ -39,12 +39,16 @@ Set following env variables for that repo:
 
 Each commit will trigger build tests
 
-Each tag will result in new image pushed as 
+Each tag will result in new image pushed as
+
 ```$DOCKER_REGISTRY/$GITHUB_USERNAME/$GITHUB_REPO/helloworld:$GIT_TAG```
 
 ## Manual builds
 
 ### Build binary
+
+Following will generate `helloworld` binary in root directory
+
 ```
 git https://github.com/funkycode/helloworld.git
 cd helloworld
@@ -52,19 +56,29 @@ cd helloworld
 go test ./...
 go build 
 ```
-This will generate helloworld binary in root directory
 
 ### Build docker
 ```
 git https://github.com/funkycode/helloworld.git
 cd helloworld
-# optionally run tests
 docker build . -t helloworld
 ```
-### Run docker
+
+### Run docker manually
 ```
 docker run --name helloworld -d -p8080:8080 helloworld # docker port 8080 is binded to host port 8080
 ```
-Or alternatively use `scripts/redeploy.sh`. It will rebuild image as `helloworld:latest`, try to stop previous instance (in case you have one running already) and start docker with name `helloworld` while binding `8080` port of docker to `8080` on host.
 
-After that you can generate request using curl or other tool of your desire.
+### Update running image
+
+```
+# pull latest changes 
+git pull 
+sh scripts/redeploy.sh
+```
+
+Script above will do following:
+
+1. It will rebuild image as `helloworld:latest` from latest code
+2. Try to stop previous instance (in case you have one running already) 
+3. Start docker with name `helloworld` while binding `8080` port of docker to `8080` on host.
