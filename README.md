@@ -1,1 +1,1 @@
-# helloword-go-guthub-ci
+# Playing with github, golang and travisCI
