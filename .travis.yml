@@ -11,13 +11,13 @@ script:
   - go build ./...
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USER" --password-stdin
-  - ls -lah
 deploy:
-  skip_cleanup: true
   provider: script
   script:
-    - docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/helloworld:"$TRAVIS_COMMIT" && docker push "$DOCKER_REGISTRY"/helloworld:"$TRAVIS_COMMIT"
+    - docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_COMMIT" && docker push "$DOCKER_REGISTRY"/"$TRAVIS_REPO_SLUG"/helloworld:"$TRAVIS_COMMIT"
   on:
-    branch: master
+    tags: true
+  # on:
+  #   branch: master
 notifications:
   email: false
