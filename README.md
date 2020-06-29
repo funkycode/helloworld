@@ -38,8 +38,10 @@ docker build . -t helloworld
 ```
 ## Run docker
 ```
-docker run -it -p8080:8080 helloworld
+docker run --name helloworld -d -p8080:8080 helloworld # docker port 8080 is binded to host port 8080
 ```
+Or alternatively use `scripts/redeploy.sh`. It will rebuild image as `helloworld:latest`, try to stop previous instance (in case you have one running already) and start docker with name `helloworld` while binding `8080` port of docker to `8080` on host.
+
 After that you can generate request using curl or other tool of your desire.
 ### Curl example:
 ```
