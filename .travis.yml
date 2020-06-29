@@ -16,9 +16,7 @@ deploy:
   skip_cleanup: true
   provider: script
   script:
-    - docker build . -t helloworld:"$TRAVIS_COMMIT"
-    - docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/helloworld:"$TRAVIS_COMMIT"
-    - docker push "$DOCKER_REGISTRY"/helloworld:"$TRAVIS_COMMIT"
+    - docker build . -t helloworld:"$TRAVIS_COMMIT" && docker tag helloworld:"$TRAVIS_COMMIT"  "$DOCKER_REGISTRY"/helloworld:"$TRAVIS_COMMIT" && docker push "$DOCKER_REGISTRY"/helloworld:"$TRAVIS_COMMIT"
   on:
     branch: master
 notifications:
