@@ -31,8 +31,11 @@ This repo contains travis CI integration and in case there is tag and all tests 
 ### Setup
 In order to utilize travis CI on your fork, connect TravisCI to your repository.
 Set following env variables for that repo:
+
 `DOCKER_USER` - your user name on github
+
 `DOCKER_PASSWORD` - API token for github
+
 `DOCKER_REGISTRY` - registry to push to, e.g. for `Packages` on github mine is set to `docker.pkg.github.com`
 
 `DO NOT forget to update badge in the head of this README to link to your build status`
